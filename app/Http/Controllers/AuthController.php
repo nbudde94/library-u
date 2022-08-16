@@ -10,17 +10,23 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()
-                ->json(['message' => 'Unauthorized'], 401);
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            $user = Auth::user();
+
+            return response()->json($user);
         }
 
-        $user = User::where('email', $request['email'])->firstOrFail();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()
-            ->json(['message' => 'Hi ' . $user->name . ', welcome to home', 'access_token' => $token, 'token_type' => 'Bearer',]);
+        return response()->json([
+            'errors' => [
+                'email' => 'The provided credentials do not match our records.',
+            ]
+        ], 422);
     }
 
     public function logout()
@@ -28,7 +34,7 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
 
         return [
-            'message' => 'You have successfully logged out and the token was successfully deleted'
+            'message' => 'You have successfully logged out.'
         ];
     }
 }
