@@ -14,7 +14,7 @@ function HeaderStudent() {
         },
         {
             "name": "Log out",
-            "url" :"/",
+            "url" :"/logout",
         }
  
     ];

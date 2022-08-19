@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react'
 import Layout from "../../components/Layout";
 import HeaderStudent from '../../components/HeaderStudent';
+import TableBooks from '../../components/TableBooks';
 
 function HomeStudent() {
-    let books = null;
+    const [books, setBooks] = useState([]);
     const handleSubmit = (event) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget);
@@ -12,9 +13,8 @@ function HomeStudent() {
             type: formData.get('type')
         }
         window.axios.get('/api/books/filter', bookParams).then((response) => {
-            books = response.data
-            console.log(books)
-        });
+            setBooks(response.data)
+        })
     }
 
     return (
@@ -40,16 +40,7 @@ function HomeStudent() {
                 </div>
                 <div className='row mt-5'>
                     <div className='col-md-12'>
-                        <table class="table table-stripped table-bordered" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Item</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
+                        <TableBooks data={books} rowsPerPage={4} />
                     </div>
                 </div>
             </div>

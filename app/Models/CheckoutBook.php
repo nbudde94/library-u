@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CheckoutBook extends Model
 {
@@ -16,4 +17,14 @@ class CheckoutBook extends Model
         'user_id',
         'book_id'
     ];
+
+    protected $appends = [
+        'book_title'
+    ];
+
+    public function getBookTitleAttribute()
+    {
+        $book = Book::where('id', $this->attributes['book_id'])->first();
+        return $book->title;
+    }
 }

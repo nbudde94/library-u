@@ -18,7 +18,7 @@ function HeaderLibrarian() {
         },
         {
             "name": "Log out",
-            "url" :"/",
+            "url" :"/logout",
         }
  
     ];

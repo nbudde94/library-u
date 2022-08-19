@@ -17,7 +17,11 @@ use App\Http\Controllers\CheckoutBookController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/login', 'login');
+    Route::post('/logout', 'logout');
+});
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('users')
         ->controller(UserLibController::class)

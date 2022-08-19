@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,14 +13,11 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
-
             return response()->json($user);
         }
-
         return response()->json([
             'errors' => [
                 'email' => 'The provided credentials do not match our records.',
@@ -32,7 +28,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->tokens()->delete();
-
         return [
             'message' => 'You have successfully logged out.'
         ];

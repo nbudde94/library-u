@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Logout from './pages/Logout';
 import HomeStudent from "./pages/Student/HomeStudent";
 import CheckoutStudent from "./pages/Student/CheckoutStudent";
 import CheckoutLibrarian from "./pages/Librarian/CheckoutLibrarian";
@@ -17,6 +18,7 @@ function Main() {
                 <Route path="/librarian/checkouts" element={<CheckoutLibrarian />} />
                 <Route path="/librarian/books" element={<ListBooks />} />
                 <Route path="/librarian/users" element={<ListUsers />} />
+                <Route path='/logout' element={<Logout />} />
             </Routes>
         </Router>
     );
