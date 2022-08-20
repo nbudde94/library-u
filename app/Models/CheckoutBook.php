@@ -22,6 +22,11 @@ class CheckoutBook extends Model
         'book_title'
     ];
 
+    protected $casts = [
+        'start_date' => 'date:d/m/Y',
+        'end_date' => 'date:d/m/Y'
+    ];
+
     public function getBookTitleAttribute()
     {
         $book = Book::where('id', $this->attributes['book_id'])->first();

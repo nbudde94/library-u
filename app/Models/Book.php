@@ -45,6 +45,7 @@ class Book extends Model
     public function getIsTakenAttribute()
     {
         $checkouts = CheckoutBook::where('user_id', Auth::user()->id)
+            ->where('status', 'taken')
             ->where('book_id', $this->attributes['id'])->first();
         return is_null($checkouts) ? false : true;
     }
