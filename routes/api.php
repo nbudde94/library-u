@@ -28,7 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ->group(function () {
             Route::get('/list', 'listAllUsers');
             Route::post('/store', 'store');
-            Route::put('/edit/{id}', 'update');
+            Route::get('/edit/{id}', 'edit');
+            Route::put('/update/{id}', 'update');
             Route::delete('/delete/{id}', 'delete');
         });
 
@@ -38,7 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/list', 'listAllBooks');
             Route::get('/filter', 'filter');
             Route::post('/store', 'store');
-            Route::put('/edit/{id}', 'update');
+            Route::get('/edit/{id}', 'edit');
+            Route::put('/update/{id}', 'update');
             Route::delete('/delete/{id}', 'delete');
         });
 

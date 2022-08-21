@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import useTable from "../../hooks/useTable";
 import styles from "./Table.module.css";
 import TableFooter from "../TableFooter";

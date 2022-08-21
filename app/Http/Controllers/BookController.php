@@ -29,6 +29,12 @@ class BookController extends Controller
         return response()->json(['message' => 'Book saved successfully.'], 200);
     }
 
+    public function edit($id)
+    {
+        $book = Book::find($id);
+        return response()->json($book);
+    }
+
     public function update(Request $request, $id)
     {
         Book::where('id', $id)->update([

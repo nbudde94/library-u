@@ -1,12 +1,32 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import useTable from "../../hooks/useTable";
 import styles from "./Table.module.css";
 import TableFooter from "../TableFooter";
+import Swal from 'sweetalert2';
 
 const TableUsers = ({ data, rowsPerPage }) => {
   const [page, setPage] = useState(1);
   const { slice, range } = useTable(data, page, rowsPerPage);
-
+  const deleteUser = (event, id) => {
+    event.preventDefault()
+    Swal.fire({
+      title: 'Are you sure you want to delete this user?',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.axios.delete('/api/users/delete/' + id).then((response) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'User deleted successfully.'
+          })
+        })
+      }
+    })
+  }
   return (
     <>
       <table className={styles.table}>
@@ -27,8 +47,8 @@ const TableUsers = ({ data, rowsPerPage }) => {
               <td className={styles.tableCell}>{user.email}</td>
               <td className={styles.tableCell}>{user.role}</td>
               <td className={styles.tableCell}>
-                <button className="btn btn-warning">Edit</button>&nbsp;&nbsp;
-                <button className="btn btn-danger">Delete</button>
+                <Link to={`/librarian/users/edit/${user.id}`} className="btn btn-warning">Edit</Link>&nbsp;&nbsp;
+                <button className="btn btn-danger" onClick={e => deleteUser(e, user.id)}>Delete</button>
               </td>
             </tr>
           )) : <tr><td className="text-center p-3">No results were found</td></tr>}

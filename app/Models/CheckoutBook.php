@@ -29,7 +29,7 @@ class CheckoutBook extends Model
 
     public function getBookTitleAttribute()
     {
-        $book = Book::where('id', $this->attributes['book_id'])->first();
+        $book = Book::where('id', $this->attributes['book_id'])->withTrashed()->first();
         return $book->title;
     }
 }

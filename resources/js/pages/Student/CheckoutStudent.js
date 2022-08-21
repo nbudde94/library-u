@@ -22,7 +22,7 @@ function CheckoutStudent() {
         }
         getData();
     }, [])
-
+    
     return (
         <Layout>
             <HeaderStudent />

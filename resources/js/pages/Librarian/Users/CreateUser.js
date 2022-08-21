@@ -3,7 +3,7 @@ import Layout from "../../../components/Layout"
 import HeaderLibrarian from '../../../components/HeaderLibrarian'
 import Swal from 'sweetalert2';
 
-function EditUser() {
+function CreateUser() {
     const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -15,11 +15,11 @@ function EditUser() {
             password: formData.get('password'),
             role: formData.get('role')
         }
-        window.axios.put('/api/users/update', userParams).then((response) => {
+        window.axios.post('/api/users/store', userParams).then((response) => {
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
-                text: 'User edited successfully.'
+                text: 'User added successfully.'
             })
             navigate("/librarian/users");
         })
@@ -36,7 +36,7 @@ function EditUser() {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-header">
-                            Edit User
+                            Create User
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit}>
@@ -68,8 +68,8 @@ function EditUser() {
                                     </select>
                                 </div>
                                 <div className="row d-flex justify-content-center mt-3">
-                                    <div className="col-md-4 d-flex justify-content-center">
-                                        <button type="submit" className="btn btn-info mt-3">Save changes</button>
+                                    <div className="col-md-4">
+                                        <button type="submit" className="btn btn-success mt-3">Create user</button>
                                     </div>
                                 </div>
                             </form>
@@ -81,4 +81,4 @@ function EditUser() {
     )
 }
 
-export default EditUser;
+export default CreateUser;

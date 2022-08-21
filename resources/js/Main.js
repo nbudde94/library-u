@@ -7,7 +7,11 @@ import HomeStudent from "./pages/Student/HomeStudent";
 import CheckoutStudent from "./pages/Student/CheckoutStudent";
 import CheckoutLibrarian from "./pages/Librarian/CheckoutLibrarian";
 import ListBooks from './pages/Librarian/Books/ListBooks';
+import AddBooks from './pages/Librarian/Books/CreateBook';
 import ListUsers from './pages/Librarian/Users/ListUsers';
+import AddUsers from './pages/Librarian/Users/CreateUser';
+import EditUser from './pages/Librarian/Users/EditUsers';
+import EditBook from './pages/Librarian/Books/EditBook';
 function Main() {
     return (
         <Router>
@@ -18,6 +22,10 @@ function Main() {
                 <Route path="/librarian/checkouts" element={<CheckoutLibrarian />} />
                 <Route path="/librarian/books" element={<ListBooks />} />
                 <Route path="/librarian/users" element={<ListUsers />} />
+                <Route path="/librarian/users/add" element={<AddUsers />} />
+                <Route path="/librarian/books/add" element={<AddBooks />} />
+                <Route path="/librarian/books/edit/:id" element={<EditBook />} />
+                <Route path="/librarian/users/edit/:id" element={<EditUser />} />
                 <Route path='/logout' element={<Logout />} />
             </Routes>
         </Router>

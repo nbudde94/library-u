@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react'
+import { Link } from "react-router-dom";
 import Layout from "../../../components/Layout"
 import HeaderLibrarian from '../../../components/HeaderLibrarian'
 import TableUsers from '../../../components/TableUsers';
@@ -29,7 +30,7 @@ function ListUsers() {
             <div className="container">
                 <div className='row d-flex justify-content-start mt-3'>
                     <div className='col-md-3'>
-                        <button className='btn btn-success'>Add user</button>
+                        <Link to='/librarian/users/add' className='btn btn-success'>Add user</Link>
                     </div>
                 </div>
                 <div className='row mt-5'>
