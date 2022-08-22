@@ -38,8 +38,7 @@ class UserLibController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
-            'password' => Hash::make($request->pass),
-            'role' => $request->role
+            'password' => Hash::make($request->pass)
         ]);
         return response()->json(['message' => 'User updated successfully.'], 200);
     }

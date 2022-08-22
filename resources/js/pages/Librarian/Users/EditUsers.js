@@ -1,10 +1,20 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../components/Layout"
 import HeaderLibrarian from '../../../components/HeaderLibrarian'
 import Swal from 'sweetalert2';
+import { useEffect, useState } from "react";
 
 function EditUser() {
+    let { id } = useParams();
     const navigate = useNavigate();
+    const [user, setUser] = useState({
+        userData: {
+            first_name: '',
+            last_name: '',
+            email: '',
+            password: ''
+        }
+    })
     const handleSubmit = (event) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget);
@@ -12,10 +22,9 @@ function EditUser() {
             first_name: formData.get('first_name'),
             last_name: formData.get('last_name'),
             email: formData.get('email'),
-            password: formData.get('password'),
-            role: formData.get('role')
+            password: formData.get('password')
         }
-        window.axios.put('/api/users/update', userParams).then((response) => {
+        window.axios.put('/api/users/update/' + id, userParams).then((response) => {
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
@@ -24,6 +33,34 @@ function EditUser() {
             navigate("/librarian/users");
         })
     }
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                let response = await window.axios.get('/api/users/edit/' + id)
+                setUser({
+                    ...user,
+                    userData: response.data
+                })
+            } catch (error) {
+                console.log(err.message)
+            }
+        }
+        getData()
+    }, []);
+
+    let updateInput = (event) => {
+        setUser({
+            ...user,
+            userData: {
+                ...user.userData,
+                [event.target.name]: event.target.value
+            }
+        })
+    }
+
+    let { userData } = user
+
     return (
         <Layout>
             <HeaderLibrarian />
@@ -42,30 +79,19 @@ function EditUser() {
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
                                     <label>First name</label>
-                                    <input name="first_name" id="first_name" className="form-control mt-2" type="text" placeholder="Type first name" />
+                                    <input name="first_name" id="first_name" className="form-control mt-2" type="text" placeholder="Type first name" value={userData.first_name} onChange={updateInput} />
                                 </div>
                                 <div className="form-group mt-3">
                                     <label>Last name</label>
-                                    <input name="last_name" id="last_name" className="form-control mt-2" type="text" placeholder="Type last name" />
+                                    <input name="last_name" id="last_name" className="form-control mt-2" type="text" placeholder="Type last name" value={userData.last_name} onChange={updateInput} />
                                 </div>
                                 <div className="form-group mt-3">
                                     <label>Email</label>
-                                    <input className="form-control mt-2" type="text" id="email" name="email" placeholder="Type email" />
+                                    <input className="form-control mt-2" type="text" id="email" name="email" placeholder="Type email" value={userData.email} onChange={updateInput} />
                                 </div>
                                 <div className="form-group mt-3">
                                     <label>Password</label>
                                     <input className="form-control mt-2" type="password" id="password" name="password" placeholder="Type Password" />
-                                </div>
-                                <div className="form-group mt-3">
-                                    <label>Confirm password</label>
-                                    <input className="form-control mt-2" type="password" id="password1" name="password1" placeholder="Confirm Password" />
-                                </div>
-                                <div className="form-group mt-3">
-                                    <label>Select role</label>
-                                    <select id="role" name="role" className='form-control mt-2'>
-                                        <option value='student'>Student</option>
-                                        <option value='librarian'>Librarian</option>
-                                    </select>
                                 </div>
                                 <div className="row d-flex justify-content-center mt-3">
                                     <div className="col-md-4 d-flex justify-content-center">
