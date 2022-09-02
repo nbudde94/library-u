@@ -5698,7 +5698,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var TableBooks = function TableBooks(_ref) {
   var data = _ref.data,
-      rowsPerPage = _ref.rowsPerPage;
+      rowsPerPage = _ref.rowsPerPage,
+      getData = _ref.getData;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
       _useState2 = _slicedToArray(_useState, 2),
@@ -5719,10 +5720,11 @@ var TableBooks = function TableBooks(_ref) {
     }).then(function (result) {
       if (result.isConfirmed) {
         window.axios.post('/api/students/take-book/' + id).then(function (response) {
+          getData();
           sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().fire({
             icon: 'success',
             title: 'Success',
-            text: response.message
+            text: response.data.message
           });
         });
       }
@@ -5890,7 +5892,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var TableLibBooks = function TableLibBooks(_ref) {
   var data = _ref.data,
-      rowsPerPage = _ref.rowsPerPage;
+      rowsPerPage = _ref.rowsPerPage,
+      getData = _ref.getData;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
       _useState2 = _slicedToArray(_useState, 2),
@@ -5911,10 +5914,11 @@ var TableLibBooks = function TableLibBooks(_ref) {
     }).then(function (result) {
       if (result.isConfirmed) {
         window.axios["delete"]('/api/books/delete/' + id).then(function (response) {
+          getData();
           sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().fire({
             icon: 'success',
             title: 'Success',
-            text: 'Book deleted successfully.'
+            text: response.data.message
           });
         });
       }
@@ -6042,7 +6046,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var TableLibrarianCheckout = function TableLibrarianCheckout(_ref) {
   var data = _ref.data,
-      rowsPerPage = _ref.rowsPerPage;
+      rowsPerPage = _ref.rowsPerPage,
+      getData = _ref.getData;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
       _useState2 = _slicedToArray(_useState, 2),
@@ -6063,10 +6068,11 @@ var TableLibrarianCheckout = function TableLibrarianCheckout(_ref) {
     }).then(function (result) {
       if (result.isConfirmed) {
         window.axios.post('/api/librarian/return-book/' + id).then(function (response) {
+          getData();
           sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().fire({
             icon: 'success',
             title: 'Success',
-            text: 'Book returned successfully.'
+            text: response.data.message
           });
         });
       }
@@ -6293,7 +6299,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var TableUsers = function TableUsers(_ref) {
   var data = _ref.data,
-      rowsPerPage = _ref.rowsPerPage;
+      rowsPerPage = _ref.rowsPerPage,
+      getData = _ref.getData;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
       _useState2 = _slicedToArray(_useState, 2),
@@ -6314,6 +6321,7 @@ var TableUsers = function TableUsers(_ref) {
     }).then(function (result) {
       if (result.isConfirmed) {
         window.axios["delete"]('/api/users/delete/' + id).then(function (response) {
+          getData();
           sweetalert2__WEBPACK_IMPORTED_MODULE_4___default().fire({
             icon: 'success',
             title: 'Success',
@@ -6938,41 +6946,34 @@ function ListBooks() {
       error = _useState6[0],
       setError = _useState6[1];
 
+  function getBookList() {
+    window.axios.get('/api/books/list').then(function (response) {
+      setBooks(response.data);
+    });
+  }
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var getData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return window.axios.get('/api/books/list');
+                try {
+                  getBookList();
+                } catch (err) {
+                  setError(err.message);
+                  setBooks(null);
+                } finally {
+                  setLoading(false);
+                }
 
-              case 3:
-                response = _context.sent;
-                setBooks(response.data);
-                _context.next = 11;
-                break;
-
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context["catch"](0);
-                setError(_context.t0.message);
-                setBooks(null);
-
-              case 11:
-                _context.prev = 11;
-                setLoading(false);
-                return _context.finish(11);
-
-              case 14:
+              case 1:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7, 11, 14]]);
+        }, _callee);
       }));
 
       return function getData() {
@@ -7001,7 +7002,8 @@ function ListBooks() {
           className: "col-md-12",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_TableLibBooks__WEBPACK_IMPORTED_MODULE_3__["default"], {
             data: books,
-            rowsPerPage: 4
+            rowsPerPage: 4,
+            getData: getBookList
           })
         })
       })]
@@ -7072,41 +7074,34 @@ function CheckoutLibrarian() {
       error = _useState6[0],
       setError = _useState6[1];
 
+  function getCheckoutsLibData() {
+    window.axios.get('/api/librarian/checkouts').then(function (response) {
+      setCheckouts(response.data);
+    });
+  }
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var getData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return window.axios.get('/api/librarian/checkouts');
+                try {
+                  getCheckoutsLibData();
+                } catch (err) {
+                  setError(err.message);
+                  setCheckouts(null);
+                } finally {
+                  setLoading(false);
+                }
 
-              case 3:
-                response = _context.sent;
-                setCheckouts(response.data);
-                _context.next = 11;
-                break;
-
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context["catch"](0);
-                setError(_context.t0.message);
-                setCheckouts(null);
-
-              case 11:
-                _context.prev = 11;
-                setLoading(false);
-                return _context.finish(11);
-
-              case 14:
+              case 1:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7, 11, 14]]);
+        }, _callee);
       }));
 
       return function getData() {
@@ -7125,7 +7120,8 @@ function CheckoutLibrarian() {
           className: "col-md-12",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_TableLibrarianCheckout__WEBPACK_IMPORTED_MODULE_3__["default"], {
             data: checkouts,
-            rowsPerPage: 4
+            rowsPerPage: 4,
+            getData: getCheckoutsLibData
           })
         })
       })
@@ -7599,41 +7595,34 @@ function ListUsers() {
       error = _useState6[0],
       setError = _useState6[1];
 
+  function getUsersList() {
+    window.axios.get('/api/users/list').then(function (response) {
+      setUsers(response.data);
+    });
+  }
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     var getData = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var response;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return window.axios.get('/api/users/list');
+                try {
+                  getUsersList();
+                } catch (err) {
+                  setError(err.message);
+                  setUsers(null);
+                } finally {
+                  setLoading(false);
+                }
 
-              case 3:
-                response = _context.sent;
-                setUsers(response.data);
-                _context.next = 11;
-                break;
-
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context["catch"](0);
-                setError(_context.t0.message);
-                setUsers(null);
-
-              case 11:
-                _context.prev = 11;
-                setLoading(false);
-                return _context.finish(11);
-
-              case 14:
+              case 1:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 7, 11, 14]]);
+        }, _callee);
       }));
 
       return function getData() {
@@ -7662,7 +7651,8 @@ function ListUsers() {
           className: "col-md-12",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_TableUsers__WEBPACK_IMPORTED_MODULE_3__["default"], {
             data: users,
-            rowsPerPage: 4
+            rowsPerPage: 4,
+            getData: getUsersList
           })
         })
       })]
@@ -7979,11 +7969,15 @@ function HomeStudent() {
         type: formData.get('type')
       }
     };
+    getSearchData(bookParams);
+  };
+
+  function getSearchData(bookParams) {
     window.axios.get('/api/books/filter', bookParams).then(function (response) {
       setBooks(response.data);
       setIsLooking(true);
     });
-  };
+  }
 
   var clearBtn = function clearBtn(event) {
     event.preventDefault();
@@ -8052,7 +8046,8 @@ function HomeStudent() {
           },
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_TableBooks__WEBPACK_IMPORTED_MODULE_3__["default"], {
             data: books,
-            rowsPerPage: 4
+            rowsPerPage: 4,
+            getData: getSearchData
           })
         })
       })]

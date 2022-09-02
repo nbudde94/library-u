@@ -24,7 +24,7 @@ class CheckoutBookController extends Controller
     {
         $book = Book::find($id);
         $isAlreadyTaken = CheckoutBook::where('user_id', Auth::user()->id)
-            ->where('book_id', $id)->first();
+            ->where('book_id', $id)->where('status', 'taken')->first();
         if (is_null($isAlreadyTaken)) {
             CheckoutBook::create([
                 'start_date' => Carbon::now(),
@@ -45,14 +45,14 @@ class CheckoutBookController extends Controller
 
     public function markAsReturned($id)
     {
-        $checkout = CheckoutBook::find($id)->first();
+        $checkout = CheckoutBook::find($id);
         CheckoutBook::where('id', $id)
             ->update([
                 'end_date' => Carbon::now(),
                 'status' => 'returned'
             ]);
-        $book = Book::find($checkout->book_id)->first();
-        Book::where('id', $book->book_id)->update([
+        $book = Book::find($checkout->book_id);
+        Book::where('id', $book->id)->update([
             'stock_amount' => $book->stock_amount + 1
         ]);
         return response()->json(['message' => 'Book returned successfully.'], 200);

@@ -5,7 +5,7 @@ import styles from "./Table.module.css";
 import TableFooter from "../TableFooter";
 import Swal from 'sweetalert2';
 
-const TableLibrarianCheckout = ({ data, rowsPerPage }) => {
+const TableLibrarianCheckout = ({ data, rowsPerPage, getData }) => {
   const [page, setPage] = useState(1);
   const { slice, range } = useTable(data, page, rowsPerPage);
   const takeReturn = (event, id) => {
@@ -18,10 +18,11 @@ const TableLibrarianCheckout = ({ data, rowsPerPage }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         window.axios.post('/api/librarian/return-book/' + id).then((response) => {
+          getData()
           Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: 'Book returned successfully.'
+            text: response.data.message
           })
         })
       }

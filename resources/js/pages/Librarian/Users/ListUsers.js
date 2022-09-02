@@ -9,11 +9,16 @@ function ListUsers() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    function getUsersList() {
+        window.axios.get('/api/users/list').then((response) => {
+            setUsers(response.data);
+        })
+    }
+
     useEffect(() => {
         const getData = async () => {
             try {
-                const response = await window.axios.get('/api/users/list');
-                setUsers(response.data);
+                getUsersList()
             } catch (err) {
                 setError(err.message);
                 setUsers(null);
@@ -35,7 +40,7 @@ function ListUsers() {
                 </div>
                 <div className='row mt-5'>
                     <div className='col-md-12'>
-                        <TableUsers data={users} rowsPerPage={4} />
+                        <TableUsers data={users} rowsPerPage={4} getData={getUsersList} />
                     </div>
                 </div>
             </div>

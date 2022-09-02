@@ -5,7 +5,7 @@ import styles from "./Table.module.css";
 import TableFooter from "../TableFooter";
 import Swal from 'sweetalert2';
 
-const TableUsers = ({ data, rowsPerPage }) => {
+const TableUsers = ({ data, rowsPerPage, getData }) => {
   const [page, setPage] = useState(1);
   const { slice, range } = useTable(data, page, rowsPerPage);
   const deleteUser = (event, id) => {
@@ -18,6 +18,7 @@ const TableUsers = ({ data, rowsPerPage }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         window.axios.delete('/api/users/delete/' + id).then((response) => {
+          getData()
           Swal.fire({
             icon: 'success',
             title: 'Success',

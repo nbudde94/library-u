@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-
 import useTable from "../../hooks/useTable";
 import styles from "./Table.module.css";
 import TableFooter from "../TableFooter";
 import Swal from 'sweetalert2'
 
-const TableBooks = ({ data, rowsPerPage }) => {
+const TableBooks = ({ data, rowsPerPage, getData }) => {
   const [page, setPage] = useState(1);
   const { slice, range } = useTable(data, page, rowsPerPage);
 
@@ -19,10 +18,11 @@ const TableBooks = ({ data, rowsPerPage }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         window.axios.post('/api/students/take-book/' + id).then((response) => {
+          getData()
           Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: response.message
+            text: response.data.message
           })
         })
       }

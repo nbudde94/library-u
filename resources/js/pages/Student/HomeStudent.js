@@ -17,6 +17,10 @@ function HomeStudent() {
                 type: formData.get('type')
             }
         }
+        getSearchData(bookParams)
+    }
+
+    function getSearchData(bookParams) {
         window.axios.get('/api/books/filter', bookParams).then((response) => {
             setBooks(response.data)
             setIsLooking(true)
@@ -54,7 +58,7 @@ function HomeStudent() {
                 </div>
                 <div className='row mt-5'>
                     <div className='col-md-12' style={{ display: isLooking == true ? "block" : "none" }}>
-                        <TableBooks data={books} rowsPerPage={4} />
+                        <TableBooks data={books} rowsPerPage={4} getData={getSearchData} />
                     </div>
                 </div>
             </div>

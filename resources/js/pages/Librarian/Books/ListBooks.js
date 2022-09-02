@@ -9,11 +9,15 @@ function ListBooks() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    function getBookList() {
+        window.axios.get('/api/books/list').then((response) => {
+            setBooks(response.data);
+        })
+    }
     useEffect(() => {
         const getData = async () => {
             try {
-                const response = await window.axios.get('/api/books/list');
-                setBooks(response.data);
+                getBookList()
             } catch (err) {
                 setError(err.message);
                 setBooks(null);
@@ -35,7 +39,7 @@ function ListBooks() {
                 </div>
                 <div className='row mt-5'>
                     <div className='col-md-12'>
-                        <TableLibBooks data={books} rowsPerPage={4} />
+                        <TableLibBooks data={books} rowsPerPage={4} getData={getBookList} />
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import styles from "./Table.module.css";
 import TableFooter from "../TableFooter";
 import Swal from 'sweetalert2';
 
-const TableLibBooks = ({ data, rowsPerPage }) => {
+const TableLibBooks = ({ data, rowsPerPage, getData }) => {
   const [page, setPage] = useState(1);
   const { slice, range } = useTable(data, page, rowsPerPage);
   const deleteBook = (event, id) => {
@@ -18,10 +18,11 @@ const TableLibBooks = ({ data, rowsPerPage }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         window.axios.delete('/api/books/delete/' + id).then((response) => {
+          getData()
           Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: 'Book deleted successfully.'
+            text: response.data.message
           })
         })
       }
